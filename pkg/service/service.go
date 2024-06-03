@@ -6,7 +6,9 @@ import (
 )
 
 type AuthService interface {
-	CreatePerson(person *postApp.Person) (int,error)
+	CreatePerson(person *postApp.Person) (int, error)
+	GenerateToken(username, password string) (string, error)
+	ParseToken(token string) (int, error)
 }
 
 type Service struct {
