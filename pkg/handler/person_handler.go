@@ -11,7 +11,7 @@ import (
 
 const (
 	authHeader = "Authorization"
-	userCtx    = "person_id"
+	personCtx  = "person_id"
 )
 
 func (h *Handler) createPerson(c *gin.Context) {
@@ -67,11 +67,11 @@ func (h *Handler) personIdentity(c *gin.Context) {
 		return
 	}
 
-	c.Set(userCtx, userId)
+	c.Set(personCtx, userId)
 }
 
 func getPersonId(c *gin.Context) (int, error) {
-	id, ok := c.Get(userCtx)
+	id, ok := c.Get(personCtx)
 	if !ok {
 		return 0, errors.New("user id not found")
 	}
