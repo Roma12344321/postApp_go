@@ -13,6 +13,7 @@ import (
 const (
 	salt       = "hjqrhjqw124617ajfhajs"
 	signingKey = "sad"
+	baseRole   = "ROLE_USER"
 )
 
 type AuthServiceImpl struct {
@@ -28,10 +29,17 @@ func NewAuthServiceImpl(repo *repository.Repository) *AuthServiceImpl {
 	return &AuthServiceImpl{repo: repo}
 }
 
-func (s *AuthServiceImpl) CreatePerson(person *postApp.Person) (int, error) {
+func (s *AuthServiceImpl) Registration(person *postApp.Person) (int, error) {
 	passwordHash := generatePasswordHash(person.Password)
 	person.Password = passwordHash
-	return s.repo.AuthRepository.CreatePerson(person)
+	person.Role = baseRole
+	id, err := s.repo.AuthRepository.CreatePerson(person)
+	if err != nil {
+		return 0, err
+	}
+	balance := &postApp.Balance{PersonId: id, Sum: 0}
+	s.repo.BalanceRepository.CreateBalance(balance)
+	return id, nil
 }
 
 func (s *AuthServiceImpl) GenerateToken(username, password string) (string, error) {

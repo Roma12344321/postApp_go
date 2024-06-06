@@ -20,7 +20,7 @@ func (h *Handler) createPerson(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	id, err := h.service.CreatePerson(&person)
+	id, err := h.service.Registration(&person)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})

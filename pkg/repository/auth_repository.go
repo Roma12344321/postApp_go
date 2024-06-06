@@ -14,8 +14,8 @@ func NewAuthRepositoryImpl(db *sqlx.DB) *AuthRepositoryImpl {
 }
 
 func (r *AuthRepositoryImpl) CreatePerson(person *postApp.Person) (int, error) {
-	query := "INSERT INTO person(username, password) VALUES ($1,$2) RETURNING id"
-	row := r.db.QueryRow(query, person.Username, person.Password)
+	query := "INSERT INTO person(username, password,role) VALUES ($1,$2,$3) RETURNING id"
+	row := r.db.QueryRow(query, person.Username, person.Password, person.Role)
 	var id int
 	err := row.Scan(&id)
 	if err != nil {

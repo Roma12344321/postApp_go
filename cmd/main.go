@@ -56,6 +56,7 @@ func runServer(ctx context.Context, db *sqlx.DB) {
 	server := new(postApp.Server)
 	repositories := repository.NewRepository(db)
 	services := service.NewService(repositories)
+	go services.SchedulerService.UpdateBalanceForVipPerson(ctx)
 	handlers := handler.NewHandler(services)
 	go func() {
 		if err := server.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {

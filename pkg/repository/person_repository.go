@@ -21,3 +21,12 @@ func (r *PersonRepositoryImpl) GetPerson(username, password string) (*postApp.Pe
 	}
 	return &person, nil
 }
+
+func (r *PersonRepositoryImpl) GetAllPersonWithRole(role string) ([]postApp.Person, error) {
+	var people []postApp.Person
+	query := "SELECT * FROM person WHERE role=$1"
+	if err := r.db.Select(&people, query, role); err != nil {
+		return nil, err
+	}
+	return people, nil
+}
